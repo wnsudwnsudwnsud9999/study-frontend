@@ -561,3 +561,199 @@ select {
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
   border-bottom: 1px solid #e2e8f0;
 }
+
+
+/* ============================= */
+/* 다크/라이트 테마 공통 스타일  */
+/* ============================= */
+
+html.theme-light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+html.theme-dark body {
+  background-color: #020617;
+  color: #e5e7eb;
+}
+
+/* 다크 모드에서 카드/통계 박스 등 살짝 어둡게 */
+html.theme-dark .feature-card,
+html.theme-dark .stat-item,
+html.theme-dark .company-item {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+/* 다크 모드에서 CTA, 히어로 섹션 느낌 */
+html.theme-dark .hero-section {
+  background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
+}
+
+html.theme-dark .home-section-cta {
+  background: #0b1120;
+}
+
+/* 다크 모드에서 텍스트 살짝 밝게 */
+html.theme-dark .section-title {
+  color: #e5e7eb;
+}
+
+html.theme-dark .section-text,
+html.theme-dark .company-text,
+html.theme-dark .last-visit-text {
+  color: #cbd5f5;
+}
+
+/* 헤더를 감싸는 래퍼 (스크롤 시 배경/그림자) */
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: transparent;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease,
+    border-bottom 0.2s ease;
+}
+
+.header-scrolled {
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* 다크 모드일 때 헤더도 살짝 어둡게 */
+html.theme-dark .header-scrolled {
+  background: #020617;
+  border-bottom-color: #1f2937;
+}
+
+/* 다크 모드 토글 버튼: 화면 왼쪽 아래 고정 */
+.theme-toggle-btn {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
+  color: #0f172a;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+  opacity: 0.95;
+  z-index: 90;
+}
+
+.theme-toggle-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+html.theme-dark .theme-toggle-btn {
+  background: #020617;
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+/* 맨 위로 이동 버튼: 오른쪽 아래 고정 */
+.scroll-top-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #0f172a;
+  color: #f9fafb;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.5);
+  opacity: 0.9;
+  z-index: 80;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.scroll-top-button:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+
+/* ============================== */
+/* 다크 모드 하단 섹션/카드 보정 */
+/* ============================== */
+
+/* 다크 모드 기본 배경 + 글자 색 */
+html.theme-dark body {
+  background-color: #020617;
+  color: #e5e7eb;
+}
+
+/* 섹션 배경을 어두운 톤으로 통일 */
+html.theme-dark .home-section,
+html.theme-dark .home-section-alt,
+html.theme-dark .stats-section,
+html.theme-dark .company-section {
+  background: #020617;
+}
+
+/* 히어로 / CTA 섹션도 다크 분위기 맞추기 */
+html.theme-dark .hero-section {
+  background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
+}
+
+html.theme-dark .home-section-cta {
+  background: #020617;
+}
+
+/* 카드류(기능 카드, 통계 카드, 회사 로고 카드) */
+html.theme-dark .feature-card,
+html.theme-dark .stat-item,
+html.theme-dark .company-item {
+  background: #0b1120;
+  border: 1px solid #1f2937;
+  color: #e5e7eb;
+}
+
+/* 텍스트 톤 보정 */
+html.theme-dark .section-title {
+  color: #e5e7eb;
+}
+
+html.theme-dark .section-text,
+html.theme-dark .company-text,
+html.theme-dark .last-visit-text {
+  color: #cbd5f5;
+}
+
+/* 백엔드 상태 / 마지막 방문 박스 */
+html.theme-dark .backend-status-box,
+html.theme-dark .visit-info-box {
+  background: #0b1120;
+  color: #e5e7eb;
+}
+
+/* 버튼 색 보정 */
+html.theme-dark .hero-main-button {
+  background: #3b82f6;
+  color: #f9fafb;
+}
+
+html.theme-dark .button.secondary {
+  background: #111827;
+  color: #e5e7eb;
+}
+
+/* 헤더가 스크롤 되었을 때 어두운 톤 적용 */
+html.theme-dark .header-scrolled {
+  background: #020617;
+  border-bottom-color: #1f2937;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.7);
+}
+
+/* 다크 모드 토글 버튼 자체도 어두운 스타일 */
+html.theme-dark .theme-toggle-btn {
+  background: #020617;
+  color: #e5e7eb;
+  border-color: #334155;
+}

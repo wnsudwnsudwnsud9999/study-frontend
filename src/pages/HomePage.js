@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
-import heroImg from "../assets/hero-main.png"; // ⭐ 메인 일러스트 (그대로 유지)
+import heroImg from "../assets/hero-main.png"; // ⭐ 메인 일러스트
 
 // 회사 로고 이미지 30개 (파일 이름은 company1~company30.png 로 준비)
 import company1 from "../assets/company1.png";
@@ -35,7 +35,7 @@ import company28 from "../assets/company28.png";
 import company29 from "../assets/company29.png";
 import company30 from "../assets/company30.png";
 
-// 로고 + 회사 이름 매핑 (이름은 네가 바꾼 버전 그대로 사용)
+// 로고 + 회사 이름 매핑
 const companyLogos = [
   { name: "삼성전자", logo: company1 },
   { name: "LG전자", logo: company2 },
@@ -72,6 +72,7 @@ const companyLogos = [
 export default function HomePage() {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(true);
+  const [lastVisit, setLastVisit] = useState(null); // BOM 3: 마지막 방문 시간
 
   // 백엔드 연결 상태 확인
   useEffect(() => {
@@ -88,7 +89,7 @@ export default function HomePage() {
       });
   }, []);
 
-  // DOM 기능 1: 스크롤 등장 애니메이션 (IntersectionObserver + classList)
+  // DOM 기능 1: 스크롤 등장 애니메이션
   useEffect(() => {
     const elements = document.querySelectorAll(".reveal-on-scroll");
 
@@ -97,7 +98,7 @@ export default function HomePage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("reveal-visible");
-            obs.unobserve(entry.target); // 한 번 보이면 관찰 해제
+            obs.unobserve(entry.target); // 한 번 보이면 관찰 종료
           }
         });
       },
@@ -109,7 +110,7 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
-  // DOM 기능 2: 숫자 카운트 애니메이션 (document.getElementById + innerText)
+  // DOM 기능 2: 숫자 카운트 애니메이션
   useEffect(() => {
     const animateValue = (id, start, end, duration) => {
       const el = document.getElementById(id);
@@ -121,7 +122,7 @@ export default function HomePage() {
         if (!startTime) startTime = timestamp;
         const progress = Math.min((timestamp - startTime) / duration, 1);
         const value = Math.floor(progress * (end - start) + start);
-        el.textContent = value.toLocaleString(); // 1,234 형식
+        el.textContent = value.toLocaleString();
 
         if (progress < 1) {
           window.requestAnimationFrame(step);
@@ -131,10 +132,26 @@ export default function HomePage() {
       window.requestAnimationFrame(step);
     };
 
-    // 예시 값 (나중에 백엔드 값으로 바꿀 수도 있음)
     animateValue("stat-plans", 0, 1284, 1500);
     animateValue("stat-requests", 0, 3209, 1500);
     animateValue("stat-hours", 0, 5432, 1500);
+  }, []);
+
+  // BOM 기능 3: 마지막 방문 시간 기억하기 (localStorage + Date)
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem("lastVisit");
+      if (stored) {
+        const d = new Date(stored);
+        if (!isNaN(d.getTime())) {
+          setLastVisit(d.toLocaleString());
+        }
+      }
+      // 이번 접속 시간 저장
+      window.localStorage.setItem("lastVisit", new Date().toISOString());
+    } catch (e) {
+      console.error("lastVisit error", e);
+    }
   }, []);
 
   return (
@@ -166,6 +183,16 @@ export default function HomePage() {
             ) : (
               <p className="backend-status-text">
                 백엔드 상태: <span>{msg}</span>
+              </p>
+            )}
+          </div>
+
+          <div className="visit-info-box">
+            {lastVisit ? (
+              <p className="last-visit-text">마지막 방문: {lastVisit}</p>
+            ) : (
+              <p className="last-visit-text">
+                이번이 첫 방문이에요. 자격증 학습, 같이 시작해 볼까요?
               </p>
             )}
           </div>
@@ -245,7 +272,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. 플랫폼 통계 섹션 (DOM 기능 2: 숫자 카운트 애니메이션) */}
+      {/* 5. 플랫폼 통계 섹션 (DOM 2: 숫자 카운트) */}
       <section className="home-section stats-section reveal-on-scroll">
         <div className="home-inner stats-inner">
           <h2 className="section-title">플랫폼 사용 통계 (예시 데이터)</h2>
@@ -282,29 +309,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. 마지막 CTA 섹션 */}
-      <section className="home-section home-section-cta reveal-on-scroll">
-        <div className="home-inner cta-inner">
-          <h2 className="section-title">
-            이제는 감이 아니라,
-            <br />
-            데이터와 계획으로 자격증을 준비해 보세요.
-          </h2>
-          <p className="section-text">
-            버튼 한 번으로 오늘부터 어떤 자격증을 어떻게 공부할지
-            <br />
-            <strong>구체적인 학습 계획</strong>을 세울 수 있습니다.
-          </p>
-
-          <div className="button-row cta-buttons">
-            <Link to="/select" className="button hero-main-button">
-              자격증 공부 계획 세우기
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. 대기업 / 공기업 로고 섹션 */}
+      {/* 6. 대기업 / 공기업 로고 섹션 */}
       <section className="home-section company-section reveal-on-scroll">
         <div className="home-inner company-inner">
           <h2 className="section-title">이런 기업들이 자격증 역량을 중요하게 봅니다</h2>
