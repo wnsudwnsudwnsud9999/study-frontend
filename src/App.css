@@ -11,59 +11,35 @@ body {
   background: #ffffff;
 }
 
-/* 각 섹션 공통 패딩 */
+/* 각 섹션 공통 패딩 (여백 넉넉하게) */
 .home-section {
-  padding: 80px 24px;
+  padding: 96px 24px;
 }
 
 .home-inner {
-  max-width: 1000px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
-/* 히어로 섹션: 좌측 텍스트, 우측 이미지 영역 */
+/* 1. 첫 화면 히어로 섹션 (정중앙 배치) */
 .hero-section {
   padding-top: 60px;
   padding-bottom: 80px;
 }
 
-.hero-layout {
+.hero-center-inner {
+  min-height: calc(100vh - 160px); /* 헤더+푸터 제외 대략 값 */
   display: flex;
-  align-items: center;
-  gap: 48px;
-  flex-wrap: wrap;
-}
-
-.hero-text {
-  flex: 1 1 320px;
-}
-
-.hero-visual {
-  flex: 1 1 320px;
-  display: flex;
-  justify-content: center;
-}
-
-.hero-visual-box {
-  width: 100%;
-  max-width: 360px;
-  height: 260px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
-  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #33691e;
-  font-size: 14px;
-  padding: 16px;
 }
 
-/* 메인 타이틀/서브타이틀 */
 .hero-title {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   line-height: 1.3;
 }
 
@@ -72,20 +48,21 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 16px;
+  font-size: 18px;
   color: #444;
-  margin-bottom: 18px;
-  line-height: 1.6;
+  margin-bottom: 24px;
+  line-height: 1.7;
 }
 
 /* 히어로 버튼 */
 .hero-buttons {
   margin-top: 8px;
+  justify-content: center;
 }
 
 /* 백엔드 상태 영역 */
 .backend-status-box {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .backend-status-text {
@@ -101,65 +78,72 @@ body {
   color: #0077ff;
 }
 
-/* 중간 설명 섹션 */
+/* 2. 가운데 정렬 섹션들 */
+.section-center {
+  text-align: center;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.section-text {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+/* 배경 색이 살짝 다른 섹션 */
 .home-section-alt {
   background: #f7fbff;
 }
 
-/* 하단 CTA 섹션 */
-.home-section-cta {
-  background: #f1f8e9;
-}
-
-.section-title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.section-text {
-  font-size: 15px;
-  color: #444;
-  margin-bottom: 16px;
-  line-height: 1.6;
-}
-
+/* 설명 리스트 */
 .section-list {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 0;
+  list-style: none;
+  font-size: 15px;
   color: #333;
-  font-size: 14px;
+  line-height: 1.7;
 }
 
 .section-list li {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 /* 기능 카드 그리드 */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-  margin-top: 20px;
+  gap: 24px;
+  margin-top: 24px;
 }
 
 .feature-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 18px 16px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  padding: 20px 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
   border: 1px solid #e0e0e0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .feature-card h3 {
   margin-top: 0;
-  margin-bottom: 8px;
-  font-size: 16px;
+  margin-bottom: 10px;
+  font-size: 17px;
 }
 
 /* CTA 섹션 중앙 정렬 */
+.home-section-cta {
+  background: #f1f8e9;
+}
+
 .cta-inner {
   text-align: center;
 }
@@ -170,10 +154,11 @@ body {
 
 /* 메인 버튼 강조 */
 .hero-main-button {
-  min-width: 220px;
+  min-width: 230px;
+  font-size: 15px;
 }
 
-/* -------- 공통 페이지 스타일 (기존 .page 등) -------- */
+/* -------- 공통 페이지 스타일 (다른 페이지에서 사용) -------- */
 
 .page {
   max-width: 800px;
@@ -221,14 +206,14 @@ body {
 .button {
   display: inline-block;
   margin-top: 12px;
-  padding: 10px 16px;
+  padding: 12px 20px;
   background: #0077ff;
   color: white;
   border-radius: 999px;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .button:hover {
@@ -387,17 +372,21 @@ select {
   color: #555;
 }
 
-/* 반응형: 화면이 좁을 때 히어로 레이아웃 세로 정렬 */
+/* 반응형: 화면이 좁을 때 여백/폰트 조정 */
 @media (max-width: 768px) {
-  .hero-layout {
-    flex-direction: column;
+  .home-section {
+    padding: 64px 16px;
+  }
+
+  .hero-center-inner {
+    min-height: calc(100vh - 140px);
   }
 
   .hero-title {
-    font-size: 28px;
+    font-size: 30px;
   }
 
-  .home-section {
-    padding: 48px 16px;
+  .section-title {
+    font-size: 24px;
   }
 }
