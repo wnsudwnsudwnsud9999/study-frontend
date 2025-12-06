@@ -64,7 +64,8 @@
   background: #333;
 }
 
-input, select {
+input,
+select {
   display: block;
   margin-top: 10px;
   margin-bottom: 8px;
@@ -140,4 +141,13 @@ input, select {
   margin-top: 10px;
   color: #0c8a2b;
   font-size: 14px;
+}
+
+.tip-list {
+  margin: 8px 0 16px;
+  padding-left: 20px;
+}
+
+.tip-item {
+  margin-bottom: 4px;
 }
