@@ -8,6 +8,7 @@ import RecommendPage from "./pages/RecommendPage";
 import HistoryPage from "./pages/HistoryPage";
 import CertDetailPage from "./pages/CertDetailPage";
 import StatsPage from "./pages/StatsPage";
+import StudyCalendarPage from "./pages/StudyCalendarPage";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/cert/:certId" element={<CertDetailPage />} />
         <Route path="/stats" element={<StatsPage />} />
+        <Route path="/calendar" element={<StudyCalendarPage />} />
       </Routes>
     </Router>
   );
