@@ -1,33 +1,70 @@
-/* 전체 배경을 그라디언트로, 화면이 꽉 찬 느낌 */
+/* 전체 기본 설정 */
 body {
   margin: 0;
-  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-}
-
-/* 공통 페이지 박스 */
-.page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
   font-family: Arial, sans-serif;
+  background: #ffffff;
 }
 
-/* 메인 랜딩 전용: 화면 높이를 거의 꽉 채우도록 */
+/* -------- 홈(랜딩) 페이지 전용 스타일 -------- */
+
 .home-page {
-  min-height: calc(100vh - 140px); /* 헤더+푸터 높이 제외 대략 값 */
+  background: #ffffff;
+}
+
+/* 각 섹션 공통 패딩 */
+.home-section {
+  padding: 80px 24px;
+}
+
+.home-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 히어로 섹션: 좌측 텍스트, 우측 이미지 영역 */
+.hero-section {
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+.hero-layout {
   display: flex;
   align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
 }
 
-/* 히어로 영역 */
-.hero {
-  text-align: left;
+.hero-text {
+  flex: 1 1 320px;
 }
 
+.hero-visual {
+  flex: 1 1 320px;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-visual-box {
+  width: 100%;
+  max-width: 360px;
+  height: 260px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #e3f2fd, #f1f8e9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #33691e;
+  font-size: 14px;
+  padding: 16px;
+}
+
+/* 메인 타이틀/서브타이틀 */
 .hero-title {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
   margin-bottom: 12px;
+  line-height: 1.3;
 }
 
 .hero-highlight {
@@ -37,27 +74,16 @@ body {
 .hero-subtitle {
   font-size: 16px;
   color: #444;
-  margin-bottom: 16px;
-  line-height: 1.5;
+  margin-bottom: 18px;
+  line-height: 1.6;
 }
 
-.hero-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0 0 20px;
-  color: #333;
-  font-size: 14px;
-}
-
-.hero-list li {
-  margin-bottom: 6px;
-}
-
+/* 히어로 버튼 */
 .hero-buttons {
   margin-top: 8px;
 }
 
-/* 백엔드 상태 박스 */
+/* 백엔드 상태 영역 */
 .backend-status-box {
   margin-top: 20px;
 }
@@ -75,7 +101,87 @@ body {
   color: #0077ff;
 }
 
-/* 기존 타이틀/서브텍스트 공통 */
+/* 중간 설명 섹션 */
+.home-section-alt {
+  background: #f7fbff;
+}
+
+/* 하단 CTA 섹션 */
+.home-section-cta {
+  background: #f1f8e9;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.section-text {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.section-list {
+  margin: 0;
+  padding-left: 20px;
+  color: #333;
+  font-size: 14px;
+}
+
+.section-list li {
+  margin-bottom: 6px;
+}
+
+/* 기능 카드 그리드 */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.feature-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e0e0e0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+/* CTA 섹션 중앙 정렬 */
+.cta-inner {
+  text-align: center;
+}
+
+.cta-buttons {
+  justify-content: center;
+}
+
+/* 메인 버튼 강조 */
+.hero-main-button {
+  min-width: 220px;
+}
+
+/* -------- 공통 페이지 스타일 (기존 .page 등) -------- */
+
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
 .page h1 {
   margin-bottom: 8px;
 }
@@ -85,7 +191,7 @@ body {
   color: #555;
 }
 
-/* 백엔드 상태 박스 (HomePage 이외에서 사용할 수 있음) */
+/* 백엔드 상태 박스 (다른 페이지에서 쓸 수도 있음) */
 .status-box {
   display: inline-flex;
   align-items: center;
@@ -279,4 +385,19 @@ select {
   margin-top: 12px;
   font-size: 13px;
   color: #555;
+}
+
+/* 반응형: 화면이 좁을 때 히어로 레이아웃 세로 정렬 */
+@media (max-width: 768px) {
+  .hero-layout {
+    flex-direction: column;
+  }
+
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .home-section {
+    padding: 48px 16px;
+  }
 }
