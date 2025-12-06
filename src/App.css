@@ -1,22 +1,143 @@
 .page {
-  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
   font-family: Arial, sans-serif;
+}
+
+.page h1 {
+  margin-bottom: 8px;
+}
+
+.sub-text {
+  margin-bottom: 16px;
+  color: #555;
+}
+
+.status-box {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f5f5f5;
+  margin-bottom: 20px;
+}
+
+.status-label {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.status-value {
+  color: #0077ff;
+}
+
+.button-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
 }
 
 .button {
   display: inline-block;
   margin-top: 12px;
-  padding: 10px 15px;
+  padding: 10px 16px;
   background: #0077ff;
   color: white;
   border-radius: 6px;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.button:hover {
+  background: #005fcc;
+}
+
+.button.secondary {
+  background: #555;
+}
+
+.button.secondary:hover {
+  background: #333;
 }
 
 input, select {
   display: block;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   padding: 8px;
-  width: 200px;
+  width: 220px;
+}
+
+.card {
+  border-radius: 8px;
+  padding: 16px;
+  background: #f8f9ff;
+  margin-bottom: 16px;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.history-item {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  background: #ffffff;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.history-cert {
+  font-weight: bold;
+}
+
+.history-date {
+  font-size: 12px;
+  color: #777;
+}
+
+.history-body p {
+  margin: 4px 0;
+}
+
+.history-message {
+  margin-top: 4px;
+  color: #333;
+}
+
+.empty-text {
+  color: #777;
+  margin: 16px 0;
+}
+
+.link-row {
+  margin-top: 16px;
+}
+
+.link {
+  color: #0077ff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.success-text {
+  margin-top: 10px;
+  color: #0c8a2b;
+  font-size: 14px;
 }
