@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function RecommendPage() {
   const location = useLocation();
@@ -7,29 +8,34 @@ export default function RecommendPage() {
 
   const [result, setResult] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // ⚠ 여기서는 임시로 간단한 로직으로 "AI 추천 결과"를 만든다.
-    // 나중에 TensorFlow.js 모델로 대체할 예정.
-    const daily = Number(state.daily) || 1;
-    const days = Number(state.days) || 1;
+    // 임시 로직 + 약간의 지연을 줘서 로딩 애니메이션이 보이게 함
+    const timer = setTimeout(() => {
+      const daily = Number(state.daily) || 1;
+      const days = Number(state.days) || 1;
 
-    const recommendedTime = Math.min(daily + 1, 6); // 하루 공부시간 + 1시간 (최대 6시간 제한)
-    const difficulty = state.cert === "정보처리기사" ? 4 : 3;
+      const recommendedTime = Math.min(daily + 1, 6); // 하루 공부시간 + 1시간 (최대 6시간)
+      const difficulty = state.cert === "정보처리기사" ? 4 : 3;
 
-    const message = state.cert
-      ? `${state.cert} 합격을 위해 오늘은 약 ${recommendedTime}시간 정도 공부하고, 난이도 ${difficulty} 수준의 문제를 풀어보는 것을 추천합니다.`
-      : `입력된 정보가 없어 기본 추천을 표시합니다. 오늘은 ${recommendedTime}시간 정도 공부를 추천합니다.`;
+      const message = state.cert
+        ? `${state.cert} 합격을 위해 오늘은 약 ${recommendedTime}시간 정도 공부하고, 난이도 ${difficulty} 수준의 문제를 풀어보는 것을 추천합니다.`
+        : `입력된 정보가 없어 기본 추천을 표시합니다. 오늘은 ${recommendedTime}시간 정도 공부를 추천합니다.`;
 
-    setResult({
-      recommendedTime,
-      difficulty,
-      message,
-      calculatedFrom: {
-        daily,
-        days,
-      },
-    });
+      setResult({
+        recommendedTime,
+        difficulty,
+        message,
+        calculatedFrom: {
+          daily,
+          days,
+        },
+      });
+      setLoading(false);
+    }, 600); // 0.6초 정도 지연
+
+    return () => clearTimeout(timer);
   }, [state]);
 
   const handleSaveHistory = () => {
@@ -58,7 +64,6 @@ export default function RecommendPage() {
       }
     }
 
-    // 최신 추천이 위로 오도록 앞에 추가
     list.unshift(historyItem);
     localStorage.setItem("recommendHistory", JSON.stringify(list));
     setSaved(true);
@@ -74,8 +79,10 @@ export default function RecommendPage() {
         </p>
       )}
 
-      {!result ? (
-        <p>추천을 계산하는 중입니다...</p>
+      {loading ? (
+        <LoadingSpinner text="AI가 학습 추천을 계산하는 중입니다..." />
+      ) : !result ? (
+        <p>추천을 계산하는 중 오류가 발생했습니다.</p>
       ) : (
         <>
           <div className="card">
