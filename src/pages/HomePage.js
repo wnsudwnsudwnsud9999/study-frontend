@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function HomePage() {
   const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // 백엔드 연결 상태를 확인하는 테스트 API 호출
     fetch("http://localhost:4000/api/test")
       .then((res) => res.json())
-      .then((data) => setMsg(data.message))
+      .then((data) => {
+        setMsg(data.message);
+        setLoading(false);
+      })
       .catch((err) => {
         console.error(err);
         setMsg("백엔드 연결 실패");
+        setLoading(false);
       });
   }, []);
 
@@ -22,10 +28,14 @@ export default function HomePage() {
         나에게 맞는 학습량과 난이도를 AI가 추천해주는 서비스입니다.
       </p>
 
-      <div className="status-box">
-        <span className="status-label">백엔드 상태:</span>
-        <span className="status-value">{msg}</span>
-      </div>
+      {loading ? (
+        <LoadingSpinner text="백엔드 상태를 불러오는 중입니다..." />
+      ) : (
+        <div className="status-box">
+          <span className="status-label">백엔드 상태:</span>
+          <span className="status-value">{msg}</span>
+        </div>
+      )}
 
       <div className="button-row">
         <Link to="/select" className="button">
