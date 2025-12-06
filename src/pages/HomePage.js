@@ -35,7 +35,7 @@ import company28 from "../assets/company28.png";
 import company29 from "../assets/company29.png";
 import company30 from "../assets/company30.png";
 
-// 로고 + 회사 이름 매핑 (이름은 나중에 네가 바꿔도 됨)
+// 로고 + 회사 이름 매핑 (이름은 네가 바꾼 버전 그대로 사용)
 const companyLogos = [
   { name: "삼성전자", logo: company1 },
   { name: "LG전자", logo: company2 },
@@ -73,8 +73,8 @@ export default function HomePage() {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // 백엔드 연결 상태 확인
   useEffect(() => {
-    // 백엔드 연결 상태를 확인하는 테스트 API 호출
     fetch("http://localhost:4000/api/test")
       .then((res) => res.json())
       .then((data) => {
@@ -86,6 +86,55 @@ export default function HomePage() {
         setMsg("백엔드 연결 실패");
         setLoading(false);
       });
+  }, []);
+
+  // DOM 기능 1: 스크롤 등장 애니메이션 (IntersectionObserver + classList)
+  useEffect(() => {
+    const elements = document.querySelectorAll(".reveal-on-scroll");
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-visible");
+            obs.unobserve(entry.target); // 한 번 보이면 관찰 해제
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  // DOM 기능 2: 숫자 카운트 애니메이션 (document.getElementById + innerText)
+  useEffect(() => {
+    const animateValue = (id, start, end, duration) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      let startTime = null;
+
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        el.textContent = value.toLocaleString(); // 1,234 형식
+
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+
+      window.requestAnimationFrame(step);
+    };
+
+    // 예시 값 (나중에 백엔드 값으로 바꿀 수도 있음)
+    animateValue("stat-plans", 0, 1284, 1500);
+    animateValue("stat-requests", 0, 3209, 1500);
+    animateValue("stat-hours", 0, 5432, 1500);
   }, []);
 
   return (
@@ -124,7 +173,7 @@ export default function HomePage() {
       </section>
 
       {/* 2. 서비스 한 줄 소개 섹션 (텍스트 왼쪽 + 이미지 오른쪽) */}
-      <section className="home-section home-section-alt">
+      <section className="home-section home-section-alt reveal-on-scroll">
         <div className="home-inner info-layout">
           <div className="info-text">
             <h2 className="section-title">재밌고 효율적인 자격증 학습 웹!</h2>
@@ -144,7 +193,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. 왜 무작정 자격증 공부를 하면 안 되는지 */}
-      <section className="home-section">
+      <section className="home-section reveal-on-scroll">
         <div className="home-inner">
           <h2 className="section-title">왜 무작정 자격증 문제만 풀면 안 될까요?</h2>
           <p className="section-text">
@@ -161,7 +210,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. 이 사이트에서 받을 수 있는 도움 */}
-      <section className="home-section home-section-alt">
+      <section className="home-section home-section-alt reveal-on-scroll">
         <div className="home-inner">
           <h2 className="section-title">이 사이트에서 받을 수 있는 도움</h2>
 
@@ -196,8 +245,45 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. 마지막 CTA 섹션 */}
-      <section className="home-section home-section-cta">
+      {/* 5. 플랫폼 통계 섹션 (DOM 기능 2: 숫자 카운트 애니메이션) */}
+      <section className="home-section stats-section reveal-on-scroll">
+        <div className="home-inner stats-inner">
+          <h2 className="section-title">플랫폼 사용 통계 (예시 데이터)</h2>
+          <p className="section-text">
+            실제 서비스에서는 백엔드 통계를 기반으로
+            <br />
+            누적 학습 계획 수, 추천 요청 수, 학습 시간을 시각화할 수 있습니다.
+            <br />
+            아래 숫자는 프론트엔드에서 DOM을 직접 조작해
+            <br />
+            <strong>0에서 목표 값까지 올라가는 애니메이션</strong>으로 표현한 예시입니다.
+          </p>
+
+          <div className="stats-grid">
+            <div className="stat-item">
+              <span className="stat-label">생성된 학습 계획</span>
+              <span className="stat-number" id="stat-plans">
+                0
+              </span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">총 추천 요청 수</span>
+              <span className="stat-number" id="stat-requests">
+                0
+              </span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">누적 학습 시간(시간)</span>
+              <span className="stat-number" id="stat-hours">
+                0
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. 마지막 CTA 섹션 */}
+      <section className="home-section home-section-cta reveal-on-scroll">
         <div className="home-inner cta-inner">
           <h2 className="section-title">
             이제는 감이 아니라,
@@ -218,8 +304,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. 대기업 / 공기업 로고 섹션 */}
-      <section className="home-section company-section">
+      {/* 7. 대기업 / 공기업 로고 섹션 */}
+      <section className="home-section company-section reveal-on-scroll">
         <div className="home-inner company-inner">
           <h2 className="section-title">이런 기업들이 자격증 역량을 중요하게 봅니다</h2>
           <p className="section-text company-text">
@@ -229,7 +315,7 @@ export default function HomePage() {
             <strong>우대사항</strong>으로 활용되고 있습니다.
             <br />
             아래 로고들은 실제 채용 공고에서 자격증을 요구하거나 높은 어학 점수를
-            선호하는대표적인 회사들의 예시입니다.
+            선호하는 대표적인 회사들의 예시입니다.
           </p>
 
           <div className="company-grid">
