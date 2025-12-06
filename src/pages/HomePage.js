@@ -23,59 +23,55 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      {/* 1. 상단 히어로 섹션 (듀오링고 첫 화면 느낌) */}
+      {/* 1. 첫 화면 히어로 섹션 */}
       <section className="home-section hero-section">
-        <div className="home-inner hero-layout">
-          <div className="hero-text">
-            <h1 className="hero-title">
-              재미있고 <span className="hero-highlight">효율적인 자격증 학습</span>
-            </h1>
-            <p className="hero-subtitle">
-              무작정 문제만 푸는 대신,{" "}
-              <strong>내 상황에 맞는 학습 계획</strong>으로 준비해 보세요.
-              <br />
-              목표 점수, 남은 기간, 하루 공부 시간을 기반으로
-              <br />
-              AI가 가장 현실적인 공부 전략을 추천해 줍니다.
-            </p>
+        <div className="home-inner hero-center-inner">
+          <h1 className="hero-title">
+            재미있고 <span className="hero-highlight">효율적인 자격증 학습</span>
+          </h1>
+          <p className="hero-subtitle">
+            자격증 준비를 더 가볍고, 더 똑똑하게.
+            <br />
+            지금 바로 나에게 맞는 학습 계획을 만들어 보세요.
+          </p>
 
-            <div className="button-row hero-buttons">
-              <Link to="/select" className="button hero-main-button">
-                자격증 공부 계획 시작하기
-              </Link>
-              <Link to="/history" className="button secondary">
-                내 추천 이력 보기
-              </Link>
-            </div>
-
-            <div className="backend-status-box">
-              {loading ? (
-                <LoadingSpinner text="백엔드 상태를 확인하는 중입니다..." />
-              ) : (
-                <p className="backend-status-text">
-                  백엔드 상태: <span>{msg}</span>
-                </p>
-              )}
-            </div>
+          <div className="button-row hero-buttons">
+            <Link to="/select" className="button hero-main-button">
+              자격증 공부 계획 세우기
+            </Link>
+            <Link to="/history" className="button secondary">
+              내 추천 이력 보기
+            </Link>
           </div>
 
-          {/* 지금은 이미지 대신 박스, 나중에 실제 이미지/일러스트로 교체 가능 */}
-          <div className="hero-visual">
-            <div className="hero-visual-box">
-              <p>
-                여기에는 나중에
-                <br />
-                자격증 공부를 상징하는
-                <br />
-                이미지 / 일러스트가 들어갑니다.
+          <div className="backend-status-box">
+            {loading ? (
+              <LoadingSpinner text="백엔드 상태를 확인하는 중입니다..." />
+            ) : (
+              <p className="backend-status-text">
+                백엔드 상태: <span>{msg}</span>
               </p>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* 2. "왜 무작정 자격증 공부하면 안 되는지" 섹션 */}
+      {/* 2. 서비스 한 줄 소개 섹션 */}
       <section className="home-section home-section-alt">
+        <div className="home-inner section-center">
+          <h2 className="section-title">재밌고 효율적인 자격증 학습 웹!</h2>
+          <p className="section-text">
+            무작정 문제만 푸는 대신, 내 상황에 맞는 학습 계획으로 준비해 보세요.
+            <br />
+            목표 점수, 남은 기간, 하루 공부 시간을 기반으로
+            <br />
+            AI가 가장 현실적인 공부 전략을 추천해 줍니다.
+          </p>
+        </div>
+      </section>
+
+      {/* 3. 왜 무작정 자격증 공부를 하면 안 되는지 */}
+      <section className="home-section">
         <div className="home-inner">
           <h2 className="section-title">왜 무작정 자격증 문제만 풀면 안 될까요?</h2>
           <p className="section-text">
@@ -91,8 +87,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. 이 사이트에서 받을 수 있는 도움 설명 섹션 */}
-      <section className="home-section">
+      {/* 4. 이 사이트에서 받을 수 있는 도움 */}
+      <section className="home-section home-section-alt">
         <div className="home-inner">
           <h2 className="section-title">이 사이트에서 받을 수 있는 도움</h2>
 
@@ -127,11 +123,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. 마지막 CTA 섹션 */}
+      {/* 5. 마지막 CTA 섹션 */}
       <section className="home-section home-section-cta">
         <div className="home-inner cta-inner">
           <h2 className="section-title">
-            이제는 감이 아니라, <br />
+            이제는 감이 아니라,
+            <br />
             데이터와 계획으로 자격증을 준비해 보세요.
           </h2>
           <p className="section-text">
@@ -143,9 +140,6 @@ export default function HomePage() {
           <div className="button-row cta-buttons">
             <Link to="/select" className="button hero-main-button">
               자격증 공부 계획 세우기
-            </Link>
-            <Link to="/stats" className="button secondary">
-              내 학습 통계 보러가기
             </Link>
           </div>
         </div>
