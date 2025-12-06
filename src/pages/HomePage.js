@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
+import heroImg from "../assets/hero-main.png"; // ⭐ 이미지 추가
 
 export default function HomePage() {
   const [msg, setMsg] = useState("");
@@ -56,17 +57,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. 서비스 한 줄 소개 섹션 */}
+      {/* 2. 서비스 한 줄 소개 섹션 (텍스트 왼쪽 + 이미지 오른쪽) */}
       <section className="home-section home-section-alt">
-        <div className="home-inner section-center">
-          <h2 className="section-title">재밌고 효율적인 자격증 학습 웹!</h2>
-          <p className="section-text">
-            무작정 문제만 푸는 대신, 내 상황에 맞는 학습 계획으로 준비해 보세요.
-            <br />
-            목표 점수, 남은 기간, 하루 공부 시간을 기반으로
-            <br />
-            AI가 가장 현실적인 공부 전략을 추천해 줍니다.
-          </p>
+        <div className="home-inner info-layout">
+          <div className="info-text">
+            <h2 className="section-title">재밌고 효율적인 자격증 학습 웹!</h2>
+            <p className="section-text">
+              무작정 문제만 푸는 대신, 내 상황에 맞는 학습 계획으로 준비해 보세요.
+              <br />
+              목표 점수, 남은 기간, 하루 공부 시간을 기반으로
+              <br />
+              AI가 가장 현실적인 공부 전략을 추천해 줍니다.
+            </p>
+          </div>
+
+          <div className="info-image">
+            <img src={heroImg} alt="자격증 학습 일러스트" />
+          </div>
         </div>
       </section>
 
