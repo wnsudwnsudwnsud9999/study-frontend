@@ -1,19 +1,25 @@
+// src/pages/SignupPage.js
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 export default function SignupPage() {
-  const { signup } = useAuth();
+  const { signup, user } = useAuth();
   const navigate = useNavigate();
 
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  // 이미 로그인 상태면 회원가입 페이지는 접근 금지
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const ok = signup(id, password);
+    const ok = await signup(id, password); // id = username
     if (ok) {
-      // 회원가입 성공하면 메인 페이지로 보냄
+      // 회원가입 성공하면 메인 페이지로
       navigate("/");
     }
   };

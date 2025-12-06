@@ -1,6 +1,7 @@
+// src/App.js
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import CertSelectPage from "./pages/CertSelectPage";
@@ -92,6 +93,9 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* 이상한 주소로 가면 루트로 */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
       </Router>

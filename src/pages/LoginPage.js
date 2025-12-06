@@ -1,22 +1,26 @@
+// src/pages/LoginPage.js
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
-  const from = location.state?.from?.pathname || "/";
+  // 이미 로그인 되어 있으면 여기 오지 말고 메인으로
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const ok = login(id, password);
+
+    const ok = await login(id, password); // id = username 으로 사용
     if (ok) {
-      navigate(from, { replace: true });
+      navigate("/");
     }
   };
 
@@ -24,9 +28,7 @@ export default function LoginPage() {
     <div className="page auth-page">
       <div className="auth-card">
         <h1 className="auth-title">자격증 학습 추천 플랫폼</h1>
-        <p className="auth-subtitle">
-          무작정 공부 말고, 계획적으로 공부할 수 있도록 도와드립니다.
-        </p>
+        <p className="auth-subtitle">로그인 후 서비스를 이용해 보세요.</p>
 
         <form onSubmit={handleSubmit}>
           <label>아이디</label>

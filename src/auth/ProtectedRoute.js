@@ -1,14 +1,13 @@
+// src/auth/ProtectedRoute.js
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 export default function ProtectedRoute({ children }) {
-  const { isLoggedIn } = useAuth();
-  const location = useLocation();
+  const { user } = useAuth();
 
-  if (!isLoggedIn) {
-    // 로그인 안 되어 있으면 /login 으로 보냄
-    return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
 
   return children;

@@ -10,6 +10,10 @@ export default function RecommendPage() {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // 백엔드 저장 상태
+  const [savingToServer, setSavingToServer] = useState(false);
+  const [serverError, setServerError] = useState("");
+
   useEffect(() => {
     // 임시 로직 + 약간의 지연을 줘서 로딩 애니메이션이 보이게 함
     const timer = setTimeout(() => {
@@ -38,9 +42,10 @@ export default function RecommendPage() {
     return () => clearTimeout(timer);
   }, [state]);
 
-  const handleSaveHistory = () => {
+  const handleSaveHistory = async () => {
     if (!result) return;
 
+    // ✅ 1단계: 기존처럼 localStorage 에도 저장 (DOM/BOM 활용)
     const historyItem = {
       id: Date.now(),
       createdAt: new Date().toISOString(),
@@ -67,6 +72,45 @@ export default function RecommendPage() {
     list.unshift(historyItem);
     localStorage.setItem("recommendHistory", JSON.stringify(list));
     setSaved(true);
+
+    // ✅ 2단계: 몽고DB(백엔드)에도 같이 저장
+    setSavingToServer(true);
+    setServerError("");
+
+    // 로그인 로직에서 userId를 localStorage에 저장했다고 가정
+    const rawUserId = localStorage.getItem("userId");
+    const userId = rawUserId ? Number(rawUserId) : undefined;
+
+    const payload = {
+      userId, // 없으면 undefined로 들어감 (스키마에서 optional)
+      cert: historyItem.cert,
+      currentLevel: historyItem.current,
+      targetLevel: historyItem.target,
+      days: historyItem.days ? Number(historyItem.days) : null,
+      dailyHour: historyItem.daily ? Number(historyItem.daily) : null,
+      recommendedTime: historyItem.recommendedTime,
+      difficulty: historyItem.difficulty,
+      message: historyItem.message,
+    };
+
+    try {
+      const res = await fetch("http://localhost:4000/api/recommend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error("서버 응답이 올바르지 않습니다.");
+      }
+    } catch (error) {
+      console.error("추천 이력 서버 저장 실패:", error);
+      setServerError(
+        "서버(MongoDB)에 추천 이력을 저장하는 데는 실패했지만, 이 브라우저 이력에는 저장되었습니다."
+      );
+    } finally {
+      setSavingToServer(false);
+    }
   };
 
   return (
@@ -101,6 +145,15 @@ export default function RecommendPage() {
 
           {saved && (
             <p className="success-text">✅ 추천 이력이 저장되었습니다.</p>
+          )}
+
+          {savingToServer && (
+            <p className="sub-text">서버에 추천 이력을 저장하는 중입니다...</p>
+          )}
+          {serverError && (
+            <p className="error-text" style={{ color: "red" }}>
+              {serverError}
+            </p>
           )}
 
           <div className="link-row">
