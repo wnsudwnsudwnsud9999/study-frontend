@@ -427,3 +427,61 @@ select {
     text-align: center;
   }
 }
+/* 회사 로고 섹션 */
+.company-section {
+  background: #ffffff;
+}
+
+.company-inner {
+  text-align: center;
+}
+
+.company-text {
+  max-width: 720px;
+  margin: 0 auto 32px;
+}
+
+/* 10개씩 3줄 느낌으로 로고 배치 */
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(60px, 1fr));
+  gap: 18px 24px;
+  justify-items: center;
+}
+
+.company-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.company-item img {
+  max-width: 60px;   /* 로고 너무 크지 않게 */
+  max-height: 40px;
+  object-fit: contain;
+  filter: grayscale(0.1);
+  opacity: 0.95;
+}
+
+.company-name {
+  font-size: 11px;
+  color: #555;
+}
+
+/* 로고 섹션 반응형 */
+@media (max-width: 1024px) {
+  .company-grid {
+    grid-template-columns: repeat(6, minmax(70px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .company-grid {
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+  }
+
+  .company-item img {
+    max-width: 54px;
+  }
+}

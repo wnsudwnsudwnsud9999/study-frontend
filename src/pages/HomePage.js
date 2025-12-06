@@ -1,7 +1,73 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
-import heroImg from "../assets/hero-main.png"; // ⭐ 이미지 추가
+import heroImg from "../assets/hero-main.png"; // ⭐ 메인 일러스트 (그대로 유지)
+
+// 회사 로고 이미지 30개 (파일 이름은 company1~company30.png 로 준비)
+import company1 from "../assets/company1.png";
+import company2 from "../assets/company2.png";
+import company3 from "../assets/company3.png";
+import company4 from "../assets/company4.png";
+import company5 from "../assets/company5.png";
+import company6 from "../assets/company6.png";
+import company7 from "../assets/company7.png";
+import company8 from "../assets/company8.png";
+import company9 from "../assets/company9.png";
+import company10 from "../assets/company10.png";
+import company11 from "../assets/company11.png";
+import company12 from "../assets/company12.png";
+import company13 from "../assets/company13.png";
+import company14 from "../assets/company14.png";
+import company15 from "../assets/company15.png";
+import company16 from "../assets/company16.png";
+import company17 from "../assets/company17.png";
+import company18 from "../assets/company18.png";
+import company19 from "../assets/company19.png";
+import company20 from "../assets/company20.png";
+import company21 from "../assets/company21.png";
+import company22 from "../assets/company22.png";
+import company23 from "../assets/company23.png";
+import company24 from "../assets/company24.png";
+import company25 from "../assets/company25.png";
+import company26 from "../assets/company26.png";
+import company27 from "../assets/company27.png";
+import company28 from "../assets/company28.png";
+import company29 from "../assets/company29.png";
+import company30 from "../assets/company30.png";
+
+// 로고 + 회사 이름 매핑 (이름은 나중에 네가 바꿔도 됨)
+const companyLogos = [
+  { name: "삼성전자", logo: company1 },
+  { name: "LG전자", logo: company2 },
+  { name: "SK하이닉스", logo: company3 },
+  { name: "네이버", logo: company4 },
+  { name: "카카오", logo: company5 },
+  { name: "현대자동차", logo: company6 },
+  { name: "기아", logo: company7 },
+  { name: "롯데", logo: company8 },
+  { name: "CJ", logo: company9 },
+  { name: "포스코", logo: company10 },
+  { name: "쿠팡", logo: company11 },
+  { name: "배달의민족", logo: company12 },
+  { name: "토스", logo: company13 },
+  { name: "카카오뱅크", logo: company14 },
+  { name: "신한은행", logo: company15 },
+  { name: "KB국민은행", logo: company16 },
+  { name: "하나은행", logo: company17 },
+  { name: "NH농협은행", logo: company18 },
+  { name: "셀트리온", logo: company19 },
+  { name: "한국가스공사", logo: company20 },
+  { name: "국민연금공단", logo: company21 },
+  { name: "인천국제공항공사", logo: company22 },
+  { name: "한국도로공사", logo: company23 },
+  { name: "한국수력원자력", logo: company24 },
+  { name: "Google", logo: company25 },
+  { name: "Microsoft", logo: company26 },
+  { name: "Amazon", logo: company27 },
+  { name: "IBM", logo: company28 },
+  { name: "Oracle", logo: company29 },
+  { name: "SAP", logo: company30 },
+];
 
 export default function HomePage() {
   const [msg, setMsg] = useState("");
@@ -148,6 +214,31 @@ export default function HomePage() {
             <Link to="/select" className="button hero-main-button">
               자격증 공부 계획 세우기
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. 대기업 / 공기업 로고 섹션 */}
+      <section className="home-section company-section">
+        <div className="home-inner company-inner">
+          <h2 className="section-title">이런 기업들이 자격증 역량을 중요하게 봅니다</h2>
+          <p className="section-text company-text">
+            토익·토스 같은 어학 점수, 정보처리기사·컴활 같은 IT/사무 자격증은
+            <br />
+            많은 대기업·공기업·금융권에서 <strong>지원 자격</strong>이나{" "}
+            <strong>우대사항</strong>으로 활용되고 있습니다.
+            <br />
+            아래 로고들은 실제 채용 공고에서 자격증을 요구하거나 높은 어학 점수를
+            선호하는대표적인 회사들의 예시입니다.
+          </p>
+
+          <div className="company-grid">
+            {companyLogos.map((c, index) => (
+              <div className="company-item" key={index}>
+                <img src={c.logo} alt={c.name} />
+                <span className="company-name">{c.name}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
