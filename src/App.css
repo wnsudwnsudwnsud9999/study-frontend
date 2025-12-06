@@ -1,3 +1,10 @@
+/* 전체 배경을 그라디언트로, 화면이 꽉 찬 느낌 */
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+}
+
+/* 공통 페이지 박스 */
 .page {
   max-width: 800px;
   margin: 0 auto;
@@ -5,6 +12,70 @@
   font-family: Arial, sans-serif;
 }
 
+/* 메인 랜딩 전용: 화면 높이를 거의 꽉 채우도록 */
+.home-page {
+  min-height: calc(100vh - 140px); /* 헤더+푸터 높이 제외 대략 값 */
+  display: flex;
+  align-items: center;
+}
+
+/* 히어로 영역 */
+.hero {
+  text-align: left;
+}
+
+.hero-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hero-highlight {
+  color: #0d47a1;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.hero-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 20px;
+  color: #333;
+  font-size: 14px;
+}
+
+.hero-list li {
+  margin-bottom: 6px;
+}
+
+.hero-buttons {
+  margin-top: 8px;
+}
+
+/* 백엔드 상태 박스 */
+.backend-status-box {
+  margin-top: 20px;
+}
+
+.backend-status-text {
+  font-size: 13px;
+  color: #555;
+  background: #f5f5f5;
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.backend-status-text span {
+  color: #0077ff;
+}
+
+/* 기존 타이틀/서브텍스트 공통 */
 .page h1 {
   margin-bottom: 8px;
 }
@@ -14,6 +85,7 @@
   color: #555;
 }
 
+/* 백엔드 상태 박스 (HomePage 이외에서 사용할 수 있음) */
 .status-box {
   display: inline-flex;
   align-items: center;
@@ -32,6 +104,7 @@
   color: #0077ff;
 }
 
+/* 버튼 공통 */
 .button-row {
   display: flex;
   gap: 12px;
@@ -45,7 +118,7 @@
   padding: 10px 16px;
   background: #0077ff;
   color: white;
-  border-radius: 6px;
+  border-radius: 999px;
   text-decoration: none;
   border: none;
   cursor: pointer;
@@ -57,13 +130,16 @@
 }
 
 .button.secondary {
-  background: #555;
+  background: #ffffff;
+  color: #0077ff;
+  border: 1px solid #0077ff;
 }
 
 .button.secondary:hover {
-  background: #333;
+  background: #e3f2fd;
 }
 
+/* 입력/셀렉트 공통 */
 input,
 select {
   display: block;
@@ -73,6 +149,7 @@ select {
   width: 220px;
 }
 
+/* 카드 박스 (추천 결과, 상세 설명 등) */
 .card {
   border-radius: 8px;
   padding: 16px;
@@ -80,6 +157,7 @@ select {
   margin-bottom: 16px;
 }
 
+/* 추천 이력 리스트 */
 .history-list {
   list-style: none;
   padding: 0;
@@ -123,6 +201,7 @@ select {
   margin: 16px 0;
 }
 
+/* 링크 공통 */
 .link-row {
   margin-top: 16px;
 }
@@ -137,12 +216,14 @@ select {
   text-decoration: underline;
 }
 
+/* 성공 메시지 */
 .success-text {
   margin-top: 10px;
   color: #0c8a2b;
   font-size: 14px;
 }
 
+/* 자격증 상세 페이지 팁 리스트 */
 .tip-list {
   margin: 8px 0 16px;
   padding-left: 20px;
@@ -152,9 +233,50 @@ select {
   margin-bottom: 4px;
 }
 
+/* 에러 텍스트 (GoalSettingPage 등) */
 .error-text {
   margin-top: 2px;
   margin-bottom: 6px;
   font-size: 13px;
   color: #d32f2f;
+}
+
+/* 로그인/회원가입 페이지 레이아웃 */
+.auth-page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 28px;
+  border-radius: 16px;
+  background: #ffffffdd;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.auth-title {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.auth-button {
+  width: 100%;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.auth-footer-text {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #555;
 }
