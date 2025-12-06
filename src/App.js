@@ -6,6 +6,7 @@ import CertSelectPage from "./pages/CertSelectPage";
 import GoalSettingPage from "./pages/GoalSettingPage";
 import RecommendPage from "./pages/RecommendPage";
 import HistoryPage from "./pages/HistoryPage";
+import CertDetailPage from "./pages/CertDetailPage";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/goal" element={<GoalSettingPage />} />
         <Route path="/recommend" element={<RecommendPage />} />
         <Route path="/history" element={<HistoryPage />} />
+        <Route path="/cert/:certId" element={<CertDetailPage />} />
       </Routes>
     </Router>
   );
