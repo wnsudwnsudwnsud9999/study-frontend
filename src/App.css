@@ -485,3 +485,79 @@ select {
     max-width: 54px;
   }
 }
+
+/* 스크롤 등장 애니메이션 공통 */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 숫자 카운트 섹션 스타일 */
+.stats-section {
+  background: #f8fafc;
+}
+
+.stats-inner {
+  text-align: center;
+}
+
+.stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.stat-item {
+  min-width: 180px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.stat-number {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* 레이아웃/헤더 스크롤 스타일 */
+.app-shell {
+}
+
+.site-main {
+}
+
+/* 헤더를 감싸는 래퍼 */
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: transparent;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease,
+    border-bottom 0.2s ease;
+}
+
+/* 스크롤 되었을 때 헤더 배경/그림자 */
+.header-scrolled {
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid #e2e8f0;
+}
