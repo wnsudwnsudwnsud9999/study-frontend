@@ -1,91 +1,127 @@
+// src/pages/HistoryPage.js
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 export default function HistoryPage() {
+  const { user } = useAuth();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [serverError, setServerError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // 현재 로그인한 userId
+  const userId = user?.id;
 
   useEffect(() => {
-    const rawUserId = localStorage.getItem("userId");
-    if (!rawUserId) {
-      setServerError("로그인 정보가 없어 추천 이력을 불러올 수 없습니다.");
+    if (!userId) {
       setLoading(false);
+      setErrorMsg("로그인 정보가 없습니다. 다시 로그인 해주세요.");
       return;
     }
 
-    const userId = Number(rawUserId);
-
-    async function fetchHistory() {
+    const fetchHistory = async () => {
       try {
+        setLoading(true);
+        setErrorMsg("");
+
         const res = await fetch(
-          `http://localhost:4000/api/recommend?userId=${userId}`
+          `http://localhost:4000/api/recommend/${userId}`
         );
+        const data = await res.json();
 
         if (!res.ok) {
-          throw new Error("서버 응답 오류");
+          throw new Error(data.message || "추천 이력 조회에 실패했습니다.");
         }
 
-        const data = await res.json();
         setHistory(data);
       } catch (err) {
-        console.error("추천 이력 불러오기 실패:", err);
-        setServerError("서버에서 추천 이력을 불러오는 데 실패했습니다.");
+        console.error("추천 이력 조회 오류:", err);
+        setErrorMsg("추천 이력을 불러오는 중 오류가 발생했습니다.");
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchHistory();
-  }, []);
+  }, [userId]);
 
-  // 로컬스토리지만 지우는 기능 (서버 DB는 그대로 유지)
-  const handleClearLocal = () => {
-    localStorage.removeItem("recommendHistory");
-    alert("브라우저(LocalStorage) 기록만 삭제되었습니다.");
+  const handleClear = async () => {
+    if (!userId) return;
+
+    if (!window.confirm("정말로 내 추천 이력을 모두 삭제할까요?")) {
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/recommend/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "이력 삭제에 실패했습니다.");
+      }
+
+      // 화면에서도 비우기
+      setHistory([]);
+      alert("추천 이력이 모두 삭제되었습니다.");
+    } catch (err) {
+      console.error("추천 이력 삭제 오류:", err);
+      alert("추천 이력을 삭제하는 중 오류가 발생했습니다.");
+    }
   };
 
   return (
     <div className="page">
       <h1>추천 이력</h1>
-      <p>서버(MongoDB)에서 불러온 나의 학습 추천 기록입니다.</p>
+      <p>지금까지 저장한 AI 추천 기록을 한 눈에 볼 수 있는 페이지입니다.</p>
 
-      {loading && <p>불러오는 중...</p>}
-
-      {serverError && (
-        <p style={{ color: "red", marginTop: "10px" }}>{serverError}</p>
-      )}
-
-      {!loading && !serverError && history.length === 0 && (
+      {loading ? (
+        <p>추천 이력을 불러오는 중입니다...</p>
+      ) : errorMsg ? (
+        <p className="error-text">{errorMsg}</p>
+      ) : history.length === 0 ? (
         <p className="empty-text">아직 저장된 추천 이력이 없습니다.</p>
-      )}
-
-      {!loading && history.length > 0 && (
+      ) : (
         <>
           <ul className="history-list">
             {history.map((item) => (
               <li key={item._id} className="history-item">
                 <div className="history-header">
-                  <span className="history-cert">{item.cert}</span>
+                  <span className="history-cert">{item.cert || "미지정"}</span>
                   <span className="history-date">
-                    {new Date(item.createdAt).toLocaleString()}
+                    {item.createdAt
+                      ? new Date(item.createdAt).toLocaleString()
+                      : ""}
                   </span>
                 </div>
-
                 <div className="history-body">
                   <p>
-                    <strong>현재 레벨:</strong> {item.currentLevel} →{" "}
-                    <strong>목표 레벨:</strong> {item.targetLevel}
+                    <strong>현재 레벨:</strong>{" "}
+                    {item.currentLevel || "정보 없음"} →{" "}
+                    <strong>목표 레벨:</strong>{" "}
+                    {item.targetLevel || "정보 없음"}
                   </p>
                   <p>
-                    <strong>남은 기간:</strong> {item.days}일 /{" "}
-                    <strong>하루 가능 시간:</strong> {item.dailyHour}시간
+                    <strong>남은 기간:</strong>{" "}
+                    {item.days != null ? item.days : "-"}일 /{" "}
+                    <strong>하루 가능 시간:</strong>{" "}
+                    {item.dailyHour != null ? item.dailyHour : "-"}시간
                   </p>
                   <p>
-                    <strong>권장 학습 시간:</strong> {item.recommendedTime}시간
+                    <strong>권장 학습 시간:</strong>{" "}
+                    {item.recommendedTime != null
+                      ? item.recommendedTime
+                      : "-"}
+                    시간
                   </p>
                   <p>
-                    <strong>추천 난이도:</strong> {item.difficulty}
+                    <strong>추천 난이도:</strong>{" "}
+                    {item.difficulty != null ? item.difficulty : "-"}
                   </p>
                   <p className="history-message">{item.message}</p>
                 </div>
@@ -93,9 +129,8 @@ export default function HistoryPage() {
             ))}
           </ul>
 
-          {/* 원하면 서버 기록 삭제 기능도 추가 가능 */}
-          <button onClick={handleClearLocal} className="button secondary">
-            브라우저(LocalStorage) 이력 삭제
+          <button onClick={handleClear} className="button secondary">
+            이력 전체 삭제
           </button>
         </>
       )}

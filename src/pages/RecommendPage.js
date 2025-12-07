@@ -1,10 +1,16 @@
+// src/pages/RecommendPage.js
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { useAuth } from "../auth/AuthContext";
 
 export default function RecommendPage() {
   const location = useLocation();
-  const state = location.state || {};
+  // 🔥 location.state 에서 필요한 값만 구조 분해
+  const { cert, current, target, days, daily } = location.state || {};
+
+  // 🔥 현재 로그인한 사용자 정보 (MySQL users.id 등)
+  const { user } = useAuth();
 
   const [result, setResult] = useState(null);
   const [saved, setSaved] = useState(false);
@@ -17,14 +23,14 @@ export default function RecommendPage() {
   useEffect(() => {
     // 임시 로직 + 약간의 지연을 줘서 로딩 애니메이션이 보이게 함
     const timer = setTimeout(() => {
-      const daily = Number(state.daily) || 1;
-      const days = Number(state.days) || 1;
+      const dailyNum = Number(daily) || 1;
+      const daysNum = Number(days) || 1;
 
-      const recommendedTime = Math.min(daily + 1, 6); // 하루 공부시간 + 1시간 (최대 6시간)
-      const difficulty = state.cert === "정보처리기사" ? 4 : 3;
+      const recommendedTime = Math.min(dailyNum + 1, 6); // 하루 공부시간 + 1시간 (최대 6시간)
+      const difficulty = cert === "정보처리기사" ? 4 : 3;
 
-      const message = state.cert
-        ? `${state.cert} 합격을 위해 오늘은 약 ${recommendedTime}시간 정도 공부하고, 난이도 ${difficulty} 수준의 문제를 풀어보는 것을 추천합니다.`
+      const message = cert
+        ? `${cert} 합격을 위해 오늘은 약 ${recommendedTime}시간 정도 공부하고, 난이도 ${difficulty} 수준의 문제를 풀어보는 것을 추천합니다.`
         : `입력된 정보가 없어 기본 추천을 표시합니다. 오늘은 ${recommendedTime}시간 정도 공부를 추천합니다.`;
 
       setResult({
@@ -32,28 +38,34 @@ export default function RecommendPage() {
         difficulty,
         message,
         calculatedFrom: {
-          daily,
-          days,
+          daily: dailyNum,
+          days: daysNum,
         },
       });
       setLoading(false);
     }, 600); // 0.6초 정도 지연
 
     return () => clearTimeout(timer);
-  }, [state]);
+  }, [cert, daily, days]); // ✅ 객체 전체(state)가 아니라 실제 값들만 의존성에 넣음
 
   const handleSaveHistory = async () => {
     if (!result) return;
 
-    // ✅ 1단계: 기존처럼 localStorage 에도 저장 (DOM/BOM 활용)
+    // 🔥 1) 로그인 여부 확인 (AuthContext 기준)
+    if (!user || !user.id) {
+      alert("로그인 정보가 없어 추천 이력을 저장할 수 없습니다. 다시 로그인해주세요.");
+      return;
+    }
+
+    // ✅ 2) 기존처럼 localStorage 에도 저장 (DOM/BOM 활용용)
     const historyItem = {
       id: Date.now(),
       createdAt: new Date().toISOString(),
-      cert: state.cert || "미지정",
-      current: state.current || "",
-      target: state.target || "",
-      days: state.days || "",
-      daily: state.daily || "",
+      cert: cert || "미지정",
+      current: current || "",
+      target: target || "",
+      days: days || "",
+      daily: daily || "",
       recommendedTime: result.recommendedTime,
       difficulty: result.difficulty,
       message: result.message,
@@ -73,16 +85,12 @@ export default function RecommendPage() {
     localStorage.setItem("recommendHistory", JSON.stringify(list));
     setSaved(true);
 
-    // ✅ 2단계: 몽고DB(백엔드)에도 같이 저장
+    // ✅ 3) 몽고DB(백엔드)에도 같이 저장 (user.id 사용)
     setSavingToServer(true);
     setServerError("");
 
-    // 로그인 로직에서 userId를 localStorage에 저장했다고 가정
-    const rawUserId = localStorage.getItem("userId");
-    const userId = rawUserId ? Number(rawUserId) : undefined;
-
     const payload = {
-      userId, // 없으면 undefined로 들어감 (스키마에서 optional)
+      userId: user.id, // ⭐ 현재 로그인한 MySQL users.id
       cert: historyItem.cert,
       currentLevel: historyItem.current,
       targetLevel: historyItem.target,
@@ -117,9 +125,9 @@ export default function RecommendPage() {
     <div className="page">
       <h1>AI 추천 결과</h1>
 
-      {state.cert && (
+      {cert && (
         <p className="sub-text">
-          선택한 자격증: <strong>{state.cert}</strong>
+          선택한 자격증: <strong>{cert}</strong>
         </p>
       )}
 
