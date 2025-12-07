@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useAuth } from "../auth/AuthContext";
+import { predictStudyTime } from "../ai/tfRecommend";
 
 export default function RecommendPage() {
   const location = useLocation();
-  // 🔥 location.state 에서 필요한 값만 구조 분해
+  // location.state 에서 필요한 값만 꺼냄
   const { cert, current, target, days, daily } = location.state || {};
-
-  // 🔥 현재 로그인한 사용자 정보 (MySQL users.id 등)
+  // 현재 로그인한 사용자
   const { user } = useAuth();
 
   const [result, setResult] = useState(null);
@@ -21,43 +21,68 @@ export default function RecommendPage() {
   const [serverError, setServerError] = useState("");
 
   useEffect(() => {
-    // 임시 로직 + 약간의 지연을 줘서 로딩 애니메이션이 보이게 함
-    const timer = setTimeout(() => {
+    let cancelled = false;
+
+    const run = async () => {
       const dailyNum = Number(daily) || 1;
       const daysNum = Number(days) || 1;
 
-      const recommendedTime = Math.min(dailyNum + 1, 6); // 하루 공부시간 + 1시간 (최대 6시간)
+      // 기본값 (TF.js 실패 대비)
+      let recommendedTime = Math.min(dailyNum + 1, 6);
+
+      // 🔥 TensorFlow.js 로 예측 시도
+      try {
+        const aiTime = await predictStudyTime({
+          current,
+          target,
+          days: daysNum,
+          daily: dailyNum,
+        });
+
+        if (typeof aiTime === "number" && !Number.isNaN(aiTime)) {
+          recommendedTime = aiTime;
+        }
+      } catch (err) {
+        console.error("TensorFlow.js 예측 오류:", err);
+      }
+
       const difficulty = cert === "정보처리기사" ? 4 : 3;
 
       const message = cert
         ? `${cert} 합격을 위해 오늘은 약 ${recommendedTime}시간 정도 공부하고, 난이도 ${difficulty} 수준의 문제를 풀어보는 것을 추천합니다.`
         : `입력된 정보가 없어 기본 추천을 표시합니다. 오늘은 ${recommendedTime}시간 정도 공부를 추천합니다.`;
 
-      setResult({
-        recommendedTime,
-        difficulty,
-        message,
-        calculatedFrom: {
-          daily: dailyNum,
-          days: daysNum,
-        },
-      });
-      setLoading(false);
-    }, 600); // 0.6초 정도 지연
+      if (!cancelled) {
+        setResult({
+          recommendedTime,
+          difficulty,
+          message,
+          calculatedFrom: {
+            daily: dailyNum,
+            days: daysNum,
+          },
+        });
+        setLoading(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, [cert, daily, days]); // ✅ 객체 전체(state)가 아니라 실제 값들만 의존성에 넣음
+    run();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cert, current, target, daily, days]);
 
   const handleSaveHistory = async () => {
     if (!result) return;
 
-    // 🔥 1) 로그인 여부 확인 (AuthContext 기준)
+    // 로그인 확인
     if (!user || !user.id) {
       alert("로그인 정보가 없어 추천 이력을 저장할 수 없습니다. 다시 로그인해주세요.");
       return;
     }
 
-    // ✅ 2) 기존처럼 localStorage 에도 저장 (DOM/BOM 활용용)
+    // 1) localStorage 에도 저장 (DOM/BOM 활용)
     const historyItem = {
       id: Date.now(),
       createdAt: new Date().toISOString(),
@@ -80,17 +105,16 @@ export default function RecommendPage() {
         console.error("Failed to parse existing history", error);
       }
     }
-
     list.unshift(historyItem);
     localStorage.setItem("recommendHistory", JSON.stringify(list));
     setSaved(true);
 
-    // ✅ 3) 몽고DB(백엔드)에도 같이 저장 (user.id 사용)
+    // 2) MongoDB(백엔드)에도 저장
     setSavingToServer(true);
     setServerError("");
 
     const payload = {
-      userId: user.id, // ⭐ 현재 로그인한 MySQL users.id
+      userId: user.id, // MySQL users.id
       cert: historyItem.cert,
       currentLevel: historyItem.current,
       targetLevel: historyItem.target,
