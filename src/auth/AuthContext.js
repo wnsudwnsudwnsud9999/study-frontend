@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState } from "react";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // 🔹 앱 시작할 때 localStorage에서 바로 복구
+  //  앱 시작할 때 localStorage에서 바로 복구
   const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem("authUser");
@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // 로그인 → MySQL
+  // 로그인 -> MySQL
   const login = async (username, password) => {
     try {
       const res = await fetch("http://localhost:4000/api/auth/login", {
@@ -88,7 +88,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
-    isLoggedIn: !!user, // 🔹 Header에서 쓰기 좋게 다시 넣어줌
+    isLoggedIn: !!user, //  Header에서 쓰기 좋게 넣어줌
     signup,
     login,
     logout,

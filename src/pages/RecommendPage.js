@@ -30,7 +30,7 @@ export default function RecommendPage() {
       // 기본값 (TF.js 실패 대비)
       let recommendedTime = Math.min(dailyNum + 1, 6);
 
-      // 🔥 TensorFlow.js 로 예측 시도
+      //  TensorFlow.js 로 예측 시도
       try {
         const aiTime = await predictStudyTime({
           current,

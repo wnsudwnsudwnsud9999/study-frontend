@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
-import heroImg from "../assets/hero-main.png"; // ⭐ 메인 일러스트
+import heroImg from "../assets/hero-main.png"; //  메인 일러스트
 
 // 회사 로고 이미지 30개 (파일 이름은 company1~company30.png 로 준비)
 import company1 from "../assets/company1.png";

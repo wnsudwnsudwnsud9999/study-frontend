@@ -55,7 +55,7 @@ export default function Layout({ children }) {
     }
   }, [theme]);
 
-  // BOM 기능 2: window.scrollY 감시 → 헤더 스타일 + 맨 위로 버튼 표시
+  // BOM 기능 2: window.scrollY 감시 -> 헤더 스타일 + 맨 위로 버튼 표시
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY || window.pageYOffset || 0;
@@ -82,7 +82,7 @@ export default function Layout({ children }) {
 
   return (
     <div style={layoutStyle} className="app-shell">
-      {/* ✅ 헤더는 원래대로: Header만 감싸고, 스크롤 시 배경/그림자만 변경 */}
+      {/*  헤더는 원래대로: Header만 감싸고, 스크롤 시 배경/그림자만 변경 */}
       <div
         className={scrolled ? "header-wrapper header-scrolled" : "header-wrapper"}
       >
@@ -95,7 +95,7 @@ export default function Layout({ children }) {
 
       <Footer />
 
-      {/* ✅ 다크 모드 버튼: 화면 왼쪽 아래로 분리 */}
+      {/*  다크 모드 버튼: 화면 왼쪽 아래로 분리 */}
       <button
         type="button"
         className="theme-toggle-btn"
@@ -104,7 +104,7 @@ export default function Layout({ children }) {
         {theme === "dark" ? "라이트 모드" : "다크 모드"}
       </button>
 
-      {/* ✅ 맨 위로 버튼: 오른쪽 아래 유지 */}
+      {/*  맨 위로 버튼: 오른쪽 아래 유지 */}
       {showScrollTop && (
         <button
           type="button"
